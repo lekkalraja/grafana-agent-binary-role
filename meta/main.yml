@@ -1,0 +1,16 @@
+galaxy_info:
+  author: Rajasekhar Lekkala
+  description: Role to install grafana-agent
+  company: your company (optional)
+
+  license: license (GPL-2.0-or-later, MIT, etc)
+
+  min_ansible_version: 2.9
+
+  platforms:
+  - name: Ubuntu
+    versions:
+    - all
+  galaxy_tags: [grafana-agent, observability-agent]
+
+dependencies: []

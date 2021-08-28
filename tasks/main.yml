@@ -1,0 +1,42 @@
+---
+- name: Get the Agent Binary
+  get_url:
+    url: "https://github.com/grafana/agent/releases/download/{{ agent.version }}/agent-linux-{{ type[ansible_architecture] }}.zip"
+    dest: "/tmp/agent-linux-{{ type[ansible_architecture] }}.zip"
+    mode: '0644'
+
+- name: Extract Agent
+  unarchive:
+    src: "/tmp/agent-linux-{{ type[ansible_architecture] }}.zip"
+    dest: "{{ agent.location }}"
+    remote_src: yes
+    mode: '0755'
+
+- name: Create Folder for Agent's config file
+  file:
+    state: directory
+    recurse: yes
+    path: "{{ config.location }}"
+    mode: 0755
+
+- name: Create Agent's config file
+  template:
+    src: agent-config.yaml.j2
+    dest: "{{ config.location }}/agent-config.yaml"
+    mode: 0644
+    force: yes
+
+- name: Create Systemd service
+  block:
+    - name: Template the new service file for Grafana agent
+      template:
+        src: grafana-agent.service.j2
+        dest: /usr/lib/systemd/system/grafana-agent.service
+        mode: '0644'
+
+    - name: Reload and start service Grafana agent
+      service:
+        name: grafana-agent
+        state: restarted
+        daemon_reload: yes
+        enabled: yes

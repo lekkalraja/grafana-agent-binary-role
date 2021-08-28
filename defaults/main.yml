@@ -1,0 +1,10 @@
+---
+# defaults file for lekkalraja/grafana-agent-binary-role
+type:
+  x86_64: amd64
+  armv7l: armv7
+agent:
+  version: v0.18.2
+  location: /usr/local/bin
+config:
+  location: /etc/grafana
